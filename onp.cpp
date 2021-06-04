@@ -71,5 +71,11 @@ bool Stapel::istLeer()    //jest pusty/is Empty
 
 int main() {
     std::cout << "Hallo, Welt!\n";
+    class Stapel stapel;
+    stapel.druck(10); //push/pchać
+    stapel.druck(20); //push/pchać
+    stapel.druck(30);
+    cout << stapel.aufziehen() << " aufziehen von stapel\n"; //ciągniemy element z stosu
+    // 
     return 0;
 }
