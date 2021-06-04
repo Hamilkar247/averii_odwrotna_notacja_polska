@@ -21,13 +21,13 @@ public:
     int a[MAXIMUM];
 
     Stapel() { scheitel = -1; }
-    bool druck(int x); //push/pchać
+    bool zustossen(int x); //push/pchać
     int aufziehen(); //pop/ciągnąć      
     int aussehen();  //spojrzeć/look
     bool istLeer();
 };
 
-bool Stapel::druck(int x) //pchać push
+bool Stapel::zustossen(int x) //pchać push
 {
     if (scheitel >= (MAXIMUM - 1)) {
         cout << "Stapel Uberlauf!"; //stack overflow / stos przepełniony
@@ -35,7 +35,7 @@ bool Stapel::druck(int x) //pchać push
     }
     else {
         a[++scheitel] = x;
-        cout << x << " hat zu Stapel gedrucken"; //pushed into stack // pchniete na stos
+        cout << x << " hat zu Stapel gezustossen"; //pushed into stack // pchniete na stos
         return true;
     }
 }
@@ -72,9 +72,9 @@ bool Stapel::istLeer()    //jest pusty/is Empty
 int main() {
     std::cout << "Hallo, Welt!\n";
     class Stapel stapel;
-    stapel.druck(10); //push/pchać
-    stapel.druck(20); //push/pchać
-    stapel.druck(30);
+    stapel.zustossen(10); //push/pchać
+    stapel.zustossen(20);//push/pchać
+    stapel.zustossen(30);
     cout << stapel.aufziehen() << " aufziehen von stapel\n"; //ciągniemy element z stosu
     // 
     return 0;
