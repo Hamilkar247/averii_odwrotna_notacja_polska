@@ -69,22 +69,27 @@ bool Stapel::istLeer()    //jest pusty/is Empty
     return (scheitel < 0); //wierzcholek
 }
 
-int main() {
-    std::cout << "Hallo, Welt!\n";
+void Stapel_nutzen_beispiel() {
+    std::cout << "Hallo, Welt!\n" <<endl;
     class Stapel stapel;
     stapel.zustossen(10); //push/pchać
     stapel.zustossen(20);//push/pchać
     stapel.zustossen(30);
-    cout << stapel.aufziehen() << " aufziehen von stapel\n"; //ciągniemy element z stosu
-    //drucken alles komponente auf Stapel :
-    cout<<"die Komponnenten auf Stapel : ";
+    cout << stapel.aufziehen() << " aufziehen von stapel"<<endl; //ciągniemy element z stosu
+    //drucken alles die Komponenten auf dem Stapel :
+    cout<<"die Komponnenten auf Stapel : "<<endl;
     while(!stapel.istLeer())
     {
-        //druck scheitel komponnente auf Stapel
+        //druck scheitel komponnente auf dem Stapel
         cout<<stapel.aussehen()<<" ";
         // loschen scheitel komponnente auf Stapel
         stapel.aufziehen();
+        cout<<"\n--------drucken den Strich -------------\n"<<endl;
     }
+}
+
+int main(){
+    Stapel_nutzen_beispiel();
 
     return 0;
 }
