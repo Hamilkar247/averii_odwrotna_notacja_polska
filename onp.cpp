@@ -76,6 +76,15 @@ int main() {
     stapel.zustossen(20);//push/pchać
     stapel.zustossen(30);
     cout << stapel.aufziehen() << " aufziehen von stapel\n"; //ciągniemy element z stosu
-    // 
+    //drucken alles komponente auf Stapel :
+    cout<<"die Komponnenten auf Stapel : ";
+    while(!stapel.istLeer())
+    {
+        //druck scheitel komponnente auf Stapel
+        cout<<stapel.aussehen()<<" ";
+        // loschen scheitel komponnente auf Stapel
+        stapel.aufziehen();
+    }
+
     return 0;
 }
