@@ -103,10 +103,46 @@ void argc_und_argv_arbeiten_beispiel(int argc, char *argv[]){
 
 class Umgekehrte_polnische_notation
 {
-private:
     Stapel stapel;
 public:
+    Umgekehrte_polnische_notation() { anzahl_Elementen = -1; }
+    int anzahl_Elementen;       //liczba/number
+    char *elementen[];
+    bool elementen_ist_Zahl();
+    void zulegen_Zahl_Tafel(int argc , char *argv[]);
+    int zeichen_Lange(char argv[]);
 };
+
+int Umgekehrte_polnische_notation::zeichen_Lange(char argv[]){
+    cout <<"zeiche_Lange"<<endl;
+    cout << argv << endl;
+    int kalkulieren = 0;        //zliczaj/count
+    while ( *argv != '\0' )
+    {
+       kalkulieren++;
+       argv++;
+    }
+    return kalkulieren;
+}
+
+void Umgekehrte_polnische_notation::zulegen_Zahl_Tafel(int argc , char *argv[])
+{
+     if(argc > 1){
+         //vorinkrementierung, also - erste `i` in Schleife 'for' hast zwei
+         for ( int i = 1; i < argc; ++i ){
+              cout<<i <<": "<<argv[i]<<endl;
+              //Wenn Ingress hat Leerzeichen nicht /nie ma spacji
+              //Wir brauchen zweite Schleife 'for'
+              int zahn = zeichen_Lange(argv[i]);
+              cout<< "zahn lang den Wort: " << zahn << endl;
+              cout<<argv[i][0]<<endl;
+         }
+     }
+     else {
+         cout<< "Gib die Argumenten nicht!" <<endl;
+     }
+}
+
 
 int main(int argc, char *argv[]) {
   //beispiel
@@ -115,6 +151,6 @@ int main(int argc, char *argv[]) {
   //die Beispiel enden
 
     class Umgekehrte_polnische_notation upn;
-
+    upn.zulegen_Zahl_Tafel(argc, argv);
     return 0;
 }
