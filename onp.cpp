@@ -33,12 +33,12 @@ public:
 bool Stapel::zustossen(string x) //pchać push
 {
     if (scheitel >= (MAXIMUM - 1)) {
-        cout << "Stapel Uberlauf!"; //stack overflow / stos przepełniony
+        //cout << "Stapel Uberlauf!"; //stack overflow / stos przepełniony
         return false;
     }
     else {
         a[++scheitel] = x;
-        cout << x << " hat zu Stapel gezustossen"; //pushed into stack // pchniete na stos
+        //cout << x << " hat zu Stapel gezustossen"; //pushed into stack // pchniete na stos
         return true;
     }
 }
@@ -46,7 +46,7 @@ bool Stapel::zustossen(string x) //pchać push
 string Stapel::aufziehen() //ciąnąć pop
 {
     if (scheitel < 0) {
-        cout << "Stapel Unterlauf"; //
+        //cout << "Stapel Unterlauf"; //
         return 0;
     }
     else {
@@ -58,7 +58,7 @@ string Stapel::aufziehen() //ciąnąć pop
 string Stapel::aussehen()  //spojrzec /peek/look
 {
     if(scheitel < 0) {
-        cout << "Stapel ist Leer";
+        //cout << "Stapel ist Leer";
         return 0;
     }
     else {
@@ -193,47 +193,139 @@ bool istNummer(const string& str){
     return true;
 }
 
+void print(string asg){
+    cout<<asg<<endl;
+}
+
 void Umgekehrte_polnische_notation::ordung_fur_upn(){
-     string* finish_ordung = new string[nummer_tafle_string];
+     string* finish_ordung = new string[nummer_tafle_string+1];
      //tafle_string_upn
      //nummer_tafle_string
-     string minus="-";
-     string plus="+";
-     string mnozenie="*";
-     string dzielenie="/";
      int finish_ordung_komponent=0;
      Stapel stapel;
-     for( int i = 0; i < nummer_tafle_string ; i++){
-         //0 oznacza że stringi są sobie równe)
+     string znak = "";
+     
+     int i = 0;
+     for( i=0; i < numer_tafle_string ; i++){
+         cout<<"-------------"<<endl;
+         cout<<"echo i:"<<i<<endl;
+         cout<<"tafle_string_upn[i]"<<tafle_string_upn[i]<<endl;
          if( istNummer(tafle_string_upn[i]) == true ){
+              print("ahjo");
+              //cout<<"wrzucam na wyjscie "<<tafle_string_upn[i]<<endl;
               finish_ordung_komponent++;
-              finish_ordung[i] == tafle_string_upn[i];
+              finish_ordung[i] = tafle_string_upn[i];
+              print("dziada w finish");
          }
          else {
-             if(tafle_string_upn[i].compare(plus) == 0){
-                 cout<<"wrzucilem plus na stos"<<endl;
-                 stapel.zustossen(tafle_string_upn[i]);
+             if (stapel.istLeer() == false){
+                 znak = stapel.aussehen();
              }
-             if(tafle_string_upn[i].compare(plus) == 0){
-                 cout<<"wrzucilem plus na stos"<<endl;
-                 stapel.zustossen(tafle_string_upn[i]);
+             if ( tafle_string_upn[i] == "+" ) {
+                 if (stapel.istLeer() == true){
+                     //cout<<"wrzucilem plus na stos"<<endl;
+                     stapel.zustossen(tafle_string_upn[i]);
+                 }
+                 else {
+                     if( znak == "+" ){
+                         finish_ordung[i] = "+";
+                     }
+                     else{ //reszta znakow ma pierwszeństwo
+                         finish_ordung[i] = stapel.aufziehen();
+                         stapel.zustossen("+");
+                     }
+                     finish_ordung_komponent++;
+                 }
              }
-             if(tafle_string_upn[i].compare(mnozenie) == 0){
-                 cout<<"wrzucilem mnozenie na stos"<<endl;
-                 stapel.zustossen(tafle_string_upn[i]);
+             else if (tafle_string_upn[i]== "-") {
+                 if (stapel.istLeer() == true) {
+                     //cout<<"wrzucilem minus na stos"<<endl;
+                     stapel.zustossen(tafle_string_upn[i]);
+                 }
+                 else {
+                     if( znak == "-"){
+                         finish_ordung[i] = "-";
+                         finish_ordung_komponent++;
+                     }
+                     else{ //reszta znakow ma pierwszeństwo
+                         finish_ordung[i] = stapel.aufziehen();
+                         stapel.zustossen("-");
+                     }
+                     finish_ordung_komponent++;
+                 }
              }
-             if(tafle_string_upn[i].compare(dzielenie) == 0){
-                 cout<<"wrzucilem mnozenie na stos"<<endl;
-                 stapel.zustossen(tafle_string_upn[i]);
+             else if( tafle_string_upn[i] == "*" ){
+                 print("ahjo");
+                 if ( stapel.istLeer() == true ) {
+                     //cout<<"wrzucilem mnozenie na stos"<<endl;
+                     stapel.zustossen(tafle_string_upn[i]);
+                 }
+                 else {
+                     if( znak == "+" || znak == "-" || znak == "*" ){
+                         //mamy wyzszy priorytet lub taki sam znak jest na stosie
+                         finish_ordung[i] = "*";
+                         finish_ordung_komponent++;
+                     }
+                     else{ // a wiec dzielenie jest na stosie
+                         finish_ordung[i] = stapel.aufziehen();
+                         stapel.zustossen(tafle_string_upn[i]);
+                     }
+                 }
+             }
+             else if(tafle_string_upn[i] == "/"){
+                 if ( stapel.istLeer()==true ) {
+                     //cout<<"wrzucilem dzielenie na stos"<<endl;
+                     stapel.zustossen(tafle_string_upn[i]);
+                 }
+                 else {
+                     if( znak == "+" || znak == "-" || znak == "/" ){
+                         //mamy wyzszy priorytet lub taki sam znak jest na stosie
+                         finish_ordung[i] = "/";
+                         finish_ordung_komponent++;
+                     }
+                     else{ // a wiec mnozenie jest na stosie - wymiana
+                         finish_ordung[i] = stapel.aufziehen();
+                         stapel.zustossen(tafle_string_upn[i]);
+                     }
+                 }
              }
          }
+         
+         cout<<endl;
+         cout<<"\nstos"<<endl;
+         if (stapel.istLeer() == false){
+             cout<<stapel.aussehen()<<endl;
+         }
+         else {
+             cout <<"pusty stos"<<endl;
+         }
+         print("wyjście opn");
+         for (int j = 0; j<=finish_ordung_komponent; j++){
+             cout<<finish_ordung[j];
+         }
+         cout<<endl;
      }
-}
+     //gdy zakonczymy petle zostaniemy nam jeden element na stosie
+     if ( stapel.istLeer() == false){
+         //cout<<stapel.aussehen()<<endl;
+         finish_ordung[finish_ordung_komponent] = stapel.aufziehen();
+         finnish_ordung_komponent++;
+     }
+     
+     cout<<"----\nwyjscie pn"<<endl;
+     for (int j = 0; j<=finish_ordung_komponent+1; j++){
+         cout<<finish_ordung[j];
+     }
+     
+      
+     cout<<endl;
+     cout<<"-------------"<<endl;
+}//ordung_fur_upn
 
 
 int main(int argc, char *argv[]) {
   //beispiel
-    //Stapel_nutzen_beispiel();
+    Stapel_nutzen_beispiel();
     //argc_und_argv_arbeiten_beispiel(argc, argv);
   //die Beispiel enden
 
