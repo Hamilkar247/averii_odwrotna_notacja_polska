@@ -139,7 +139,7 @@ void Umgekehrte_polnische_notation::zulegen_Zahl_Tafel(int argc , char *argv[])
               //Wir brauchen zweite Schleife 'for'
               int zahn = zeichen_Lange(argv[i]); //zeichen - znak symbol
               cout<< "zahn lang auf den Worte: " << zahn << endl;
-              string tafle_string*;
+              //string tafle_string*;
               string kette_zahn = "";
               for ( int j = 0; j <= zahn; ++j){
                   if (isdigit(argv[i][j]) == true){
@@ -170,7 +170,33 @@ int main(int argc, char *argv[]) {
     //argc_und_argv_arbeiten_beispiel(argc, argv);
   //die Beispiel enden
 
+    // beispiel
+    // 4      zahn dem Set
+    // 4 + 3 + 14 + 20
+    // 3 - 3 + 1 + 4
+    int n, m;
+    cin >> n;
+    cin >> m;
+    string ** tafle = new string*[n];
+    //deklaracja
+    for ( int i = 0; i<n; i++){
+         tafle[i] = new string[m];
+    }
+
+    //
+    for (int i = 0; i<n; i++)
+    for (int j = 0; j<n; j++)
+    cin >> tafle[i][j];
+
+    for (int i = 0; i<n; i++)
+    for (int j = 0; j<n; j++)
+    cin >> tafle[i][j];
+
     class Umgekehrte_polnische_notation upn;
-    upn.zulegen_Zahl_Tafel(argc, argv);
+
+//    for (int i = 0; i<n; i++){
+//        class Umgekehrte_polnische_notation upn;
+//        upn.zulegen_Zahl_Tafel(argc, argv);
+//    }
     return 0;
 }
