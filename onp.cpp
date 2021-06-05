@@ -21,16 +21,16 @@ class Stapel {    //stos
     int scheitel; //wierzchołek/top
 
 public:
-    int a[MAXIMUM];
+    string a[MAXIMUM];
 
     Stapel() { scheitel = -1; }
-    bool zustossen(int x); //push/pchać
-    int aufziehen(); //pop/ciągnąć
-    int aussehen();  //spojrzeć/look
+    bool zustossen(string x); //push/pchać
+    string aufziehen(); //pop/ciągnąć
+    string aussehen();  //spojrzeć/look
     bool istLeer();
 };
 
-bool Stapel::zustossen(int x) //pchać push
+bool Stapel::zustossen(string x) //pchać push
 {
     if (scheitel >= (MAXIMUM - 1)) {
         cout << "Stapel Uberlauf!"; //stack overflow / stos przepełniony
@@ -43,26 +43,26 @@ bool Stapel::zustossen(int x) //pchać push
     }
 }
 
-int Stapel::aufziehen() //ciąnąć pop
+string Stapel::aufziehen() //ciąnąć pop
 {
     if (scheitel < 0) {
         cout << "Stapel Unterlauf"; //
         return 0;
     }
     else {
-       int x = a[scheitel--];
+       string x = a[scheitel--];
        return x;
     }
 }
 
-int Stapel::aussehen()  //spojrzec /peek/look
+string Stapel::aussehen()  //spojrzec /peek/look
 {
     if(scheitel < 0) {
         cout << "Stapel ist Leer";
         return 0;
     }
     else {
-        int x = a[scheitel];
+        string x = a[scheitel];
         return x;
     }
 }
@@ -75,9 +75,9 @@ bool Stapel::istLeer()    //jest pusty/is Empty
 void Stapel_nutzen_beispiel() {
     std::cout << "Hallo, Welt!\n" <<endl;
     class Stapel stapel;
-    stapel.zustossen(10); //push/pchać
-    stapel.zustossen(20);//push/pchać
-    stapel.zustossen(30);
+    stapel.zustossen("10"); //push/pchać
+    stapel.zustossen("20");//push/pchać
+    stapel.zustossen("30");
     cout << stapel.aufziehen() << " aufziehen von stapel"<<endl; //ciągniemy element z stosu
     //drucken alles die Komponenten auf dem Stapel :
     cout<<"die Komponnenten auf Stapel : "<<endl;
@@ -107,10 +107,13 @@ class Umgekehrte_polnische_notation
     Stapel stapel;
 public:
     Umgekehrte_polnische_notation() { anzahl_Elementen = -1; }
+    string* tafle_string_upn;
+    int nummer_tafle_string;
     int anzahl_Elementen;       //liczba/number
     char *elementen[];
     bool elementen_ist_Zahl_nicht_Buchstache(char zahl);
     void zulegen_Zahl_Tafel(int argc , char *argv[]);
+    void ordung_fur_upn();
     int komponent_Lange(char argv[]);
 };
 
@@ -152,17 +155,14 @@ void Umgekehrte_polnische_notation::zulegen_Zahl_Tafel(int argc , char *argv[])
               int zahn=0;
               int nummer_komponent = 0;
               while (komponent  > nummer_komponent){
-                 cout << komponent << " " << nummer_komponent << endl;
                  if (isdigit(argv[i][zahn]) == true){
                      kette_zahn.push_back(argv[i][zahn]);
                  }
                  else {
                      tafle_string[nummer_komponent] = kette_zahn;
-                     //cout<<tafle_string[nummer_komponent] <<endl;
                      nummer_komponent++;
                      kette_zahn.clear();
                      tafle_string[nummer_komponent].push_back(argv[i][zahn]);
-                     //cout<<tafle_string[nummer_komponent]<<endl;
                      nummer_komponent++;
                  }
                  zahn++;
@@ -172,10 +172,61 @@ void Umgekehrte_polnische_notation::zulegen_Zahl_Tafel(int argc , char *argv[])
               for ( int j = 0; j < komponent; j++){
                   cout <<" "<<tafle_string[j] <<" ";
               }
+              cout<<endl;
+
+              //Przypisanie wartości atrybutom
+              nummer_tafle_string=komponent;
+              tafle_string_upn=tafle_string;
          }
      }
      else {
          cout<< "Gib die Argumenten nicht!" <<endl;
+     }
+}
+
+bool istNummer(const string& str){
+    for (char const &c : str){
+        if (isdigit(c) == 0){
+            return false;
+        }
+    }
+    return true;
+}
+
+void Umgekehrte_polnische_notation::ordung_fur_upn(){
+     string* finish_ordung = new string[nummer_tafle_string];
+     //tafle_string_upn
+     //nummer_tafle_string
+     string minus="-";
+     string plus="+";
+     string mnozenie="*";
+     string dzielenie="/";
+     int finish_ordung_komponent=0;
+     Stapel stapel;
+     for( int i = 0; i < nummer_tafle_string ; i++){
+         //0 oznacza że stringi są sobie równe)
+         if( istNummer(tafle_string_upn[i]) == true ){
+              finish_ordung_komponent++;
+              finish_ordung[i] == tafle_string_upn[i];
+         }
+         else {
+             if(tafle_string_upn[i].compare(plus) == 0){
+                 cout<<"wrzucilem plus na stos"<<endl;
+                 stapel.zustossen(tafle_string_upn[i]);
+             }
+             if(tafle_string_upn[i].compare(plus) == 0){
+                 cout<<"wrzucilem plus na stos"<<endl;
+                 stapel.zustossen(tafle_string_upn[i]);
+             }
+             if(tafle_string_upn[i].compare(mnozenie) == 0){
+                 cout<<"wrzucilem mnozenie na stos"<<endl;
+                 stapel.zustossen(tafle_string_upn[i]);
+             }
+             if(tafle_string_upn[i].compare(dzielenie) == 0){
+                 cout<<"wrzucilem mnozenie na stos"<<endl;
+                 stapel.zustossen(tafle_string_upn[i]);
+             }
+         }
      }
 }
 
@@ -188,5 +239,6 @@ int main(int argc, char *argv[]) {
 
     class Umgekehrte_polnische_notation upn;
     upn.zulegen_Zahl_Tafel(argc, argv);
+    upn.ordung_fur_upn();
     return 0;
 }
