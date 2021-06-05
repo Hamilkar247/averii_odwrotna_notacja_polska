@@ -10,6 +10,7 @@
 #include <bits/stdc++.h>
 #include <ctype.h>
 #include <string>
+#include <cstring>
 
 using namespace std;
 
@@ -110,18 +111,24 @@ public:
     char *elementen[];
     bool elementen_ist_Zahl_nicht_Buchstache(char zahl);
     void zulegen_Zahl_Tafel(int argc , char *argv[]);
-    int zeichen_Lange(char argv[]);
+    int komponent_Lange(char argv[]);
 };
 
-int Umgekehrte_polnische_notation::zeichen_Lange(char argv[]){
+int Umgekehrte_polnische_notation::komponent_Lange(char argv[]){
     cout <<"zeiche_Lange"<<endl;
     cout << argv << endl;
-    int kalkulieren = 0;        //zliczaj/count
-    while ( *argv != '\0' )
+    int kalkulieren = 1;        //zliczaj/count
+    int zahn = 0;
+    while ( argv[zahn] != '\0' )
     {
-       kalkulieren++;
-       argv++;
+       cout<<argv[zahn]<<endl;
+       if (isdigit(argv[zahn]) == false) {
+           kalkulieren++;// fur zahn
+           kalkulieren++;// fur operator
+       }
+       zahn++;
     }
+    cout<< "die Nummer dem Komponnent " << kalkulieren <<endl;
     return kalkulieren;
 }
 
@@ -137,25 +144,34 @@ void Umgekehrte_polnische_notation::zulegen_Zahl_Tafel(int argc , char *argv[])
               cout<<i <<": "<<argv[i]<<endl;
               //Wenn Ingress hat Leerzeichen nicht /nie ma spacji
               //Wir brauchen zweite Schleife 'for'
-              int zahn = zeichen_Lange(argv[i]); //zeichen - znak symbol
-              cout<< "zahn lang auf den Worte: " << zahn << endl;
-              string tafle_string*;
+              int komponent = komponent_Lange(argv[i]); //zeichen - znak symbol
+              cout<< "zahn lang auf den Worte: " << komponent << endl;
+              string* tafle_string = new string[komponent+1];
+              int nummer_dem_tafle = 0;
               string kette_zahn = "";
-              for ( int j = 0; j <= zahn; ++j){
-                  if (isdigit(argv[i][j]) == true){
-                      kette_zahn.push_back(argv[i][j]);
-                  }
-                  else {
-                      cout<<kette_zahn<<endl;
+              int zahn=0;
+              int nummer_komponent = 0;
+              while (komponent  > nummer_komponent){
+                 cout << komponent << " " << nummer_komponent << endl;
+                 if (isdigit(argv[i][zahn]) == true){
+                     kette_zahn.push_back(argv[i][zahn]);
+                 }
+                 else {
+                     tafle_string[nummer_komponent] = kette_zahn;
+                     //cout<<tafle_string[nummer_komponent] <<endl;
+                     nummer_komponent++;
+                     kette_zahn.clear();
+                     tafle_string[nummer_komponent].push_back(argv[i][zahn]);
+                     //cout<<tafle_string[nummer_komponent]<<endl;
+                     nummer_komponent++;
+                 }
+                 zahn++;
+              }
 
-                      cout<<"----------"<<endl;
-                      kette_zahn="";
-                      if ( argv[i][j] == '+' || argv[i][j] == '-'
-                        || argv[i][j] == '*' || argv[i][j] == '/' ){
-                          cout << argv[i][j] <<endl;
-                      }
-                  }
-             }
+              cout<<"komponent " << komponent <<endl;
+              for ( int j = 0; j < komponent; j++){
+                  cout <<" "<<tafle_string[j] <<" ";
+              }
          }
      }
      else {

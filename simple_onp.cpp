@@ -101,19 +101,19 @@ void argc_und_argv_arbeiten_beispiel(int argc, char *argv[]){
     }
 }
 
-class Umgekehrte_polnische_notation
+class Odwrotna_notacja_polska
 {
     Stapel stapel;
 public:
-    Umgekehrte_polnische_notation() { anzahl_Elementen = -1; }
+    Odwrotna_notacja_polska() { anzahl_Elementen = -1; }
     int anzahl_Elementen;       //liczba/number
     char *elementen[];
     bool elementen_ist_Zahl_nicht_Buchstache(char zahl);
-    void zulegen_Zahl_Tafel(int argc , char *argv[]);
+    void zaladuj_tablice_symboli(string *name, int liczba_elementow);
     int zeichen_Lange(char argv[]);
 };
 
-int Umgekehrte_polnische_notation::zeichen_Lange(char argv[]){
+int Odwrotna_notacja_polska::zeichen_Lange(char argv[]){
     cout <<"zeiche_Lange"<<endl;
     cout << argv << endl;
     int kalkulieren = 0;        //zliczaj/count
@@ -125,42 +125,37 @@ int Umgekehrte_polnische_notation::zeichen_Lange(char argv[]){
     return kalkulieren;
 }
 
-bool Umgekehrte_polnische_notation::elementen_ist_Zahl_nicht_Buchstache(char zahl){
+bool Odwrotna_notacja_polska::elementen_ist_Zahl_nicht_Buchstache(char zahl){
     return false;
 }
 
-void Umgekehrte_polnische_notation::zulegen_Zahl_Tafel(int argc , char *argv[])
+void Odwrotna_notacja_polska::zaladuj_tablice_symboli(string *tablica, int liczba_elementow)
 {
-     if(argc > 1){
-         //vorinkrementierung, also - erste `i` in Schleife 'for' hast zwei
-         for ( int i = 1; i < argc; ++i ){
-              cout<<i <<": "<<argv[i]<<endl;
-              //Wenn Ingress hat Leerzeichen nicht /nie ma spacji
-              //Wir brauchen zweite Schleife 'for'
-              int zahn = zeichen_Lange(argv[i]); //zeichen - znak symbol
-              cout<< "zahn lang auf den Worte: " << zahn << endl;
-              //string tafle_string*;
-              string kette_zahn = "";
-              for ( int j = 0; j <= zahn; ++j){
-                  if (isdigit(argv[i][j]) == true){
-                      kette_zahn.push_back(argv[i][j]);
-                  }
-                  else {
-                      cout<<kette_zahn<<endl;
+    cout << tablica[0] << tablica[1] << endl;
+    //vorinkrementierung, also - erste `i` in Schleife 'for' hast zwei
+    for ( int i = 0; i < liczba_elementow; i++ ){
+         cout<<i <<": "<<tablica[i]<<endl;
+         ////Wenn Ingress hat Leerzeichen nicht /nie ma spacji
+         ////Wir brauchen zweite Schleife 'for'
+         //int zahn = zeichen_Lange(tablica[i]); //zeichen - znak symbol
+         //cout<< "zahn lang auf den Worte: " << zahn << endl;
+         ////string tafle_string*;
+         //string kette_zahn = "";
+         //for ( int j = 0; j <= zahn; ++j){
+         //    if (isdigit(tablica[i][j]) == true){
+         //        kette_zahn.push_back(tablica[i][j]);
+         //    }
+         //    else {
+         //        cout<<kette_zahn<<endl;
 
-                      cout<<"----------"<<endl;
-                      kette_zahn="";
-                      if ( argv[i][j] == '+' || argv[i][j] == '-'
-                        || argv[i][j] == '*' || argv[i][j] == '/' ){
-                          cout << argv[i][j] <<endl;
-                      }
-                  }
-             }
-         }
-     }
-     else {
-         cout<< "Gib die Argumenten nicht!" <<endl;
-     }
+         //        cout<<"----------"<<endl;
+         //        kette_zahn="";
+         //        if ( tablica[i][j] == '+' || tablica[i][j] == '-'
+         //          || tablica[i][j] == '*' || tablica[i][j] == '/' ){
+         //            cout << tablica[i][j] <<endl;
+         //        }
+         //    }
+    }
 }
 
 
@@ -172,31 +167,30 @@ int main(int argc, char *argv[]) {
 
     // beispiel
     // 4      zahn dem Set
-    // 4 + 3 + 14 + 20
-    // 3 - 3 + 1 + 4
+    // erste set
+    // 4 elementy
+    // 4 + 3 +
+    // zwer
     int n, m;
+    cout << "ile zbiorow" << endl;
     cin >> n;
+    cout << "ile elementow będzie w kazdym zestawie np. 4 + 4 x 4 - to 5 elementow"<< endl;
     cin >> m;
-    string ** tafle = new string*[n];
+    string ** tablica = new string*[n];
     //deklaracja
+    cout << " a teraz po spacjach wpisujemy kolejne elementy dzialania" <<endl;
     for ( int i = 0; i<n; i++){
-         tafle[i] = new string[m];
+         tablica[i] = new string[m];
     }
 
-    //
     for (int i = 0; i<n; i++)
     for (int j = 0; j<n; j++)
-    cin >> tafle[i][j];
+    cin >> tablica[i][j];
 
-    for (int i = 0; i<n; i++)
-    for (int j = 0; j<n; j++)
-    cin >> tafle[i][j];
+    class Odwrotna_notacja_polska onp;
 
-    class Umgekehrte_polnische_notation upn;
-
-//    for (int i = 0; i<n; i++){
-//        class Umgekehrte_polnische_notation upn;
-//        upn.zulegen_Zahl_Tafel(argc, argv);
-//    }
+    for (int i = 0; i<n; i++){
+        onp.zaladuj_tablice_symboli(tablica[i], m);
+    }
     return 0;
 }
