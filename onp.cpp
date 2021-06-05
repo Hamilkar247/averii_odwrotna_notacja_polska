@@ -107,14 +107,17 @@ class Umgekehrte_polnische_notation
     Stapel stapel;
 public:
     Umgekehrte_polnische_notation() { anzahl_Elementen = -1; }
-    string* tafle_string_upn;
-    int nummer_tafle_string;
     int anzahl_Elementen;       //liczba/number
-    char *elementen[];
     bool elementen_ist_Zahl_nicht_Buchstache(char zahl);
     void zulegen_Zahl_Tafel(int argc , char *argv[]);
     void ordung_fur_upn();
+      string* tafle_string_upn;
+      int nummer_tafle_string;
+    void upn_kalkulieren();
+      int finish_ordung_komponent;
+      string* finish_ordung;
     int komponent_Lange(char argv[]);
+    char *elementen[];
 };
 
 int Umgekehrte_polnische_notation::komponent_Lange(char argv[]){
@@ -198,24 +201,24 @@ void print(string asg){
 }
 
 void Umgekehrte_polnische_notation::ordung_fur_upn(){
-     string* finish_ordung = new string[nummer_tafle_string+1];
+     print("porzadkujemy zgodnie z odwrocona polska notacja");
+     finish_ordung = new string[nummer_tafle_string+1];
      //tafle_string_upn
      //nummer_tafle_string
-     int finish_ordung_komponent=0;
+     finish_ordung_komponent=0;
      Stapel stapel;
      string znak = "";
      
      int i = 0;
-     for( i=0; i < numer_tafle_string ; i++){
+     for( i=0; i < nummer_tafle_string ; i++){
          cout<<"-------------"<<endl;
          cout<<"echo i:"<<i<<endl;
          cout<<"tafle_string_upn[i]"<<tafle_string_upn[i]<<endl;
          if( istNummer(tafle_string_upn[i]) == true ){
               print("ahjo");
               //cout<<"wrzucam na wyjscie "<<tafle_string_upn[i]<<endl;
+              finish_ordung[finish_ordung_komponent] = tafle_string_upn[i];
               finish_ordung_komponent++;
-              finish_ordung[i] = tafle_string_upn[i];
-              print("dziada w finish");
          }
          else {
              if (stapel.istLeer() == false){
@@ -228,10 +231,10 @@ void Umgekehrte_polnische_notation::ordung_fur_upn(){
                  }
                  else {
                      if( znak == "+" ){
-                         finish_ordung[i] = "+";
+                         finish_ordung[finish_ordung_komponent] = "+";
                      }
                      else{ //reszta znakow ma pierwszeństwo
-                         finish_ordung[i] = stapel.aufziehen();
+                         finish_ordung[finish_ordung_komponent] = stapel.aufziehen();
                          stapel.zustossen("+");
                      }
                      finish_ordung_komponent++;
@@ -244,11 +247,10 @@ void Umgekehrte_polnische_notation::ordung_fur_upn(){
                  }
                  else {
                      if( znak == "-"){
-                         finish_ordung[i] = "-";
-                         finish_ordung_komponent++;
+                         finish_ordung[finish_ordung_komponent] = "-";
                      }
                      else{ //reszta znakow ma pierwszeństwo
-                         finish_ordung[i] = stapel.aufziehen();
+                         finish_ordung[finish_ordung_komponent] = stapel.aufziehen();
                          stapel.zustossen("-");
                      }
                      finish_ordung_komponent++;
@@ -263,13 +265,13 @@ void Umgekehrte_polnische_notation::ordung_fur_upn(){
                  else {
                      if( znak == "+" || znak == "-" || znak == "*" ){
                          //mamy wyzszy priorytet lub taki sam znak jest na stosie
-                         finish_ordung[i] = "*";
-                         finish_ordung_komponent++;
+                         finish_ordung[finish_ordung_komponent] = "*";
                      }
                      else{ // a wiec dzielenie jest na stosie
-                         finish_ordung[i] = stapel.aufziehen();
+                         finish_ordung[finish_ordung_komponent] = stapel.aufziehen();
                          stapel.zustossen(tafle_string_upn[i]);
                      }
+                     finish_ordung_komponent++;
                  }
              }
              else if(tafle_string_upn[i] == "/"){
@@ -280,19 +282,19 @@ void Umgekehrte_polnische_notation::ordung_fur_upn(){
                  else {
                      if( znak == "+" || znak == "-" || znak == "/" ){
                          //mamy wyzszy priorytet lub taki sam znak jest na stosie
-                         finish_ordung[i] = "/";
-                         finish_ordung_komponent++;
+                         finish_ordung[finish_ordung_komponent] = "/";
                      }
                      else{ // a wiec mnozenie jest na stosie - wymiana
-                         finish_ordung[i] = stapel.aufziehen();
+                         finish_ordung[finish_ordung_komponent] = stapel.aufziehen();
                          stapel.zustossen(tafle_string_upn[i]);
-                     }
+                     }                     
+                     finish_ordung_komponent++;
                  }
              }
          }
          
          cout<<endl;
-         cout<<"\nstos"<<endl;
+         cout<<"\nostatni element stosu"<<endl;
          if (stapel.istLeer() == false){
              cout<<stapel.aussehen()<<endl;
          }
@@ -305,23 +307,72 @@ void Umgekehrte_polnische_notation::ordung_fur_upn(){
          }
          cout<<endl;
      }
-     //gdy zakonczymy petle zostaniemy nam jeden element na stosie
+     //gdy zakonczymy petle zostaniemy nam jeden element na stosie - też go lapiemy
      if ( stapel.istLeer() == false){
          //cout<<stapel.aussehen()<<endl;
          finish_ordung[finish_ordung_komponent] = stapel.aufziehen();
-         finnish_ordung_komponent++;
      }
-     
-     cout<<"----\nwyjscie pn"<<endl;
-     for (int j = 0; j<=finish_ordung_komponent+1; j++){
+      
+     cout<<"----\nwyjscie opn "<<finish_ordung_komponent<<endl;
+     for (int j = 0; j<=finish_ordung_komponent; j++){
          cout<<finish_ordung[j];
      }
-     
       
-     cout<<endl;
-     cout<<"-------------"<<endl;
+     cout<<"\n-------------"<<endl;
 }//ordung_fur_upn
 
+void Umgekehrte_polnische_notation::upn_kalkulieren(){
+    print("ahjo_kalkulieren");
+    Stapel stapel;
+    cout<<"finish_ordung_komponent "<<finish_ordung_komponent<<endl;
+    //finish_ordung_komponent
+    //finish_ordung
+    int wynik=0;
+    for (int i=0; i<=finish_ordung_komponent; i++){
+        cout<<"------------"<<endl;
+        cout<<"finish_ordung["<<i<<"] "<<finish_ordung[i]<<endl;
+        if ( istNummer(finish_ordung[i]) == true){
+            print("ahjo");
+            //cout<<"wrzucam na wyjściu"<<endl
+            stapel.zustossen(finish_ordung[i]);
+        }
+        else {
+            print("nie liczba");
+            if (!stapel.istLeer()){
+                int second_number=stoi(stapel.aufziehen());
+                int first_number=stoi(stapel.aufziehen());
+                cout<<"second_number:"<<second_number<<endl;
+                cout<<"first_number :"<<first_number<<endl;
+                int finish_number=0;
+                if (finish_ordung[i] == "+"){
+                    finish_number=first_number+second_number;
+                }
+                else if (finish_ordung[i] == "-") {
+                    finish_number=first_number-second_number;
+                }
+                else if (finish_ordung[i] == "*") {
+                    finish_number=first_number*second_number;
+                }
+                else if (finish_ordung[i] == "/"){
+                    finish_number = first_number/second_number;
+                }
+                cout<<"finish_number"<<finish_number<<endl;
+                //wynik wrzucamy z powrotem do stosu
+                stapel.zustossen(to_string(finish_number));
+            }
+        }
+        cout<<"\nstos"<<endl;
+        if (stapel.istLeer() == false) {
+            cout<<stapel.aussehen()<<endl;
+        }
+        else {
+            cout << "pusty stos"<<endl;   
+        }
+    }
+    if(stapel.istLeer() == false){
+        cout<<"Końcowa suma wynosi"<<stapel.aufziehen()<<endl;
+    }
+}
 
 int main(int argc, char *argv[]) {
   //beispiel
@@ -332,5 +383,6 @@ int main(int argc, char *argv[]) {
     class Umgekehrte_polnische_notation upn;
     upn.zulegen_Zahl_Tafel(argc, argv);
     upn.ordung_fur_upn();
+    upn.upn_kalkulieren();
     return 0;
 }
