@@ -88,8 +88,33 @@ void Stapel_nutzen_beispiel() {
     }
 }
 
-int main(){
-    Stapel_nutzen_beispiel();
+void argc_und_argv_arbeiten_beispiel(int argc, char *argv[]){
+
+    //probe argc und argv
+    cout << "Du hast betreten variabel " << argc << " die Argumenten: " << "\n";
+    //erste Argumente ist vorname dem Program
+    //anderer ist schreiben die Argumenten
+    for ( int i = 0; i < argc; ++i){
+        cout << argv[i] << "\n";
+    }
+
+}
+
+
+class Umgekehrte_polnische_notation
+{
+private:
+    Stapel stapel;
+public:
+};
+
+int main(int argc, char *argv[]) {
+  //beispiel
+    //Stapel_nutzen_beispiel();
+    //argc_und_argv_arbeiten_beispiel(argc, argv);
+  //die Beispiel enden
+
+    class Umgekehrte_polnische_notation upn;
 
     return 0;
 }
